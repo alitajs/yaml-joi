@@ -23,7 +23,7 @@ const schemaValidTypeName: JoiSchemaTypeName[] = [
 ];
 
 const schemaValidator = Joi.object({
-  allowNull: Joi.boolean(),
+  allowEmpty: Joi.alternatives(Joi.boolean(), 'null', 'nothing'),
   isSchema: Joi.boolean(),
   limitation: Joi.array(),
   type: Joi.string()
@@ -42,18 +42,29 @@ export function joiSchemaParser(unparsed: JoiSchema): Joi.Schema {
     for (const step of unparsed.limitation) {
       const entries = Object.entries(step);
       for (const item of entries) {
-        item[1] = objToSchemaArgs(excludeCircular(Array.isArray(item[1]) ? item[1] : [item[1]]));
-        ret = (ret[item[0] as keyof typeof step] as Function)(...item[1]);
+        const args = excludeCircular(Array.isArray(item[1]) ? item[1] : [item[1]]);
+        // @ts-ignore
+        ret = ret[item[0]](...objToSchemaArgs(args));
       }
     }
   }
-  if (unparsed.allowNull !== false) {
-    ret = Joi.alternatives(null, ret);
+  switch (unparsed.allowEmpty) {
+    case true:
+      ret = Joi.alternatives(null, ret);
+      break;
+    case 'null':
+      ret = Joi.alternatives(null, ret).required();
+      break;
+    case 'nothing':
+      break;
+    default:
+      ret = ret.required();
+      break;
   }
   return ret;
 }
 
-export function yamlToJoi(yaml: string, loadOpts: Yaml.LoadOptions): Joi.Schema {
+export function yamlToJoi(yaml: string, loadOpts?: Yaml.LoadOptions): Joi.Schema {
   return joiSchemaParser(Yaml.load(yaml, loadOpts));
 }
 

@@ -28,11 +28,15 @@ type JoiSchemaLimitation<T extends { [k: string]: any }> = {
 }[];
 interface JoiBasicSchema<S> {
   /**
-   * Allow value to be `null`.
+   * Allow value to be `null` or `undefined` or both of them.
+   * - `'null'`: Only allow `null`.
+   * - `'nothing'`: Do nothing about empty check.
+   * - `true`: Allow both `null` and `undefined`.
+   * - `false`: Deny both `null` and `undefined`.
    * @default
-   * true
+   * false
    */
-  allowNull?: boolean;
+  allowEmpty?: 'null' | 'nothing' | boolean;
   /**
    * Additional limitations on writing data.
    * @default

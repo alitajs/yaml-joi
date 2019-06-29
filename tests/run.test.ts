@@ -11,7 +11,6 @@ interface TestCase {
 }
 const testInputPath = path.join(__dirname, './cases.yml');
 const testInput: TestCase[] = yaml.load(fs.readFileSync(testInputPath, 'utf8'));
-fs.writeFileSync('./temp.json', JSON.stringify(testInput), 'utf8');
 
 describe('Run parser', () => {
   it('api exists', () => {
@@ -39,9 +38,20 @@ describe('Run parser', () => {
     testInput.forEach(({ schema, cases }) => {
       const parsed = joiSchemaParser(schema);
       for (const item of cases) {
-        const hasErr = !!parsed.validate(item.value).error;
-        expect(hasErr).toBe(item.error);
+        const { error } = parsed.validate(item.value);
+        if (!!error !== item.error) {
+          console.log(yaml.dump(schema));
+          console.log(yaml.dump(item));
+          if (error) console.log(error.message);
+        }
+        expect(!!error).toBe(item.error);
       }
     });
+  });
+
+  it('yaml loader', () => {
+    expect(() => {
+      yamlToJoi(yaml.dump(testInput[0].schema));
+    }).not.toThrow();
   });
 });

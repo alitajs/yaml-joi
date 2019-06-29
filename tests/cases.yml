@@ -1,6 +1,6 @@
 - schema:
     type: string
-    allowNull: true
+    allowEmpty: "null"
     limitation:
       - min: 3
       - max: 5
@@ -16,3 +16,112 @@
       error: true
     - value: null
       error: false
+- schema:
+    type: string
+    allowEmpty: true
+    limitation:
+      - equal:
+        - aaa
+        - bbb
+  cases:
+    - value: abc
+      error: true
+    - value: aaa
+      error: false
+    - value: bbb
+      error: false
+    - value: null
+      error: false
+- schema:
+    type: binary
+    allowEmpty: false
+  cases:
+    - value: !!binary YQ==
+      error: false
+    - value: 0
+      error: true
+    - value: string
+      error: false
+    - value: null
+      error: true
+- schema:
+    type: boolean
+  cases:
+    - value: true
+      error: false
+    - value: 0
+      error: true
+    - value: false
+      error: false
+- schema:
+    type: date
+    limitation:
+      - greater: 2019-06-29T08:00:00.000Z
+      - less: 2019-06-30T08:00:00.000Z
+  cases:
+    - value: 2019-06-29T10:24:00.000Z
+      error: false
+    - value: 2019-07-01T10:24:00.000Z
+      error: true
+    - value: 2018-06-29T10:24:00.000Z
+      error: true
+- schema:
+    type: number
+    limitation:
+      - not: [0, 1]
+  cases:
+    - value: 2
+      error: false
+    - value: 0
+      error: true
+    - value: 1
+      error: true
+- schema:
+    type: object
+    limitation:
+      - keys:
+          name:
+            isSchema: true
+            type: string
+            allowEmpty: nothing
+            limitation:
+              - max: 24
+  cases:
+    - value:
+        name: Alita
+      error: false
+    - value: {}
+      error: false
+    - value:
+        name: null
+      error: true
+    - value:
+        name: LengthOfStrExceedsTheLimit
+      error: true
+- schema:
+    type: array
+    limitation:
+      - ordered: StrictEqual
+      - ordered:
+          isSchema: true
+          type: number
+  cases:
+    - value:
+        - StrictEqual
+        - 123
+      error: false
+    - value:
+        - StrictEqual
+      error: true
+    - value:
+        - 123
+        - 123
+      error: true
+    - value:
+        - NotEqual
+        - 123
+      error: true
+    - value:
+        - StrictEqual
+        - NotNumber
+      error: true
