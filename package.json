@@ -53,6 +53,7 @@
     "js-yaml": "^3.13.1"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.15",
     "@types/joi": "^14.3.3",
     "@types/js-yaml": "^3.12.1",
     "@types/node": "^8.10.0",

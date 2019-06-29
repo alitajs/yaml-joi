@@ -14,3 +14,5 @@
       error: true
     - value: a a c
       error: true
+    - value: null
+      error: false

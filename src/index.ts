@@ -1,9 +1,9 @@
 import Joi from 'joi';
 import Yaml from 'js-yaml';
 import { JoiSchema, JoiSchemaTypeName } from './types';
-import { excludeCircular, isYamlDumpable, isYamlDumpableBasicType } from './utils';
+import { excludeCircular } from './utils';
 
-export { isYamlDumpable, isYamlDumpableBasicType };
+export * from './types';
 
 function objToSchemaArgs(obj: any) {
   if (typeof obj !== 'object' || !obj) return obj;
