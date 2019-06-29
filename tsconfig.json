@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "target": "es2019",
+    "outDir": "build/",
+    "declaration": true,
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "preserveConstEnums": true,
+    "experimentalDecorators": true
+  },
+  "include": ["src/**/*.ts"]
+}

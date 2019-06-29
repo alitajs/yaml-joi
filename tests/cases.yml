@@ -1,0 +1,16 @@
+- schema:
+    type: string
+    allowNull: true
+    limitation:
+      - min: 3
+      - max: 5
+      - regex: !!js/regexp /^(\S*)$/
+  cases:
+    - value: a
+      error: true
+    - value: aaa
+      error: false
+    - value: abcdefg
+      error: true
+    - value: a a c
+      error: true

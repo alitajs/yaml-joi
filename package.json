@@ -1,0 +1,67 @@
+{
+  "name": "yaml-joi",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "index.js",
+  "types": "build/index.d.ts",
+  "typings": "build/index.d.ts",
+  "description": "Parse string in yaml format into Joi validator",
+  "scripts": {
+    "lint": "tslint \"src/**/*.ts\" -c tslint.yml",
+    "build:node10": "tsc --build tsconfig.json",
+    "build:node8": "tsc --build tsconfig.node8.json",
+    "build": "npm run build:node10 && npm run build:node8",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage",
+    "coverage": "cat ./coverage/lcov.info | coveralls"
+  },
+  "homepage": "https://github.com/alitajs/yaml-joi#readme",
+  "bugs": {
+    "url": "https://github.com/alitajs/yaml-joi/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alitajs/yaml-joi.git"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "tslint --fix",
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "files": [
+    "build",
+    "build8",
+    "index.js"
+  ],
+  "keywords": [
+    "joi",
+    "yaml",
+    "node",
+    "parser",
+    "validate",
+    "validator"
+  ],
+  "dependencies": {
+    "joi": "^14.3.0",
+    "js-yaml": "^3.13.1"
+  },
+  "devDependencies": {
+    "@types/joi": "^14.3.3",
+    "@types/js-yaml": "^3.12.1",
+    "@types/node": "^8.10.0",
+    "coveralls": "^3.0.4",
+    "husky": "^2.4.1",
+    "lint-staged": "^8.2.1",
+    "prettier": "^1.18.2",
+    "tslint": "^5.17.0",
+    "typescript": "^3.5.1",
+    "umi-test": "^1.6.1"
+  }
+}
