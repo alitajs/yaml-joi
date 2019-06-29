@@ -40,4 +40,26 @@ validator.validate('a b c').error !== null;
 validator.validate('abcdef').error !== null;
 ```
 
-See more example at [cases.yml](https://github.com/alitajs/yaml-joi/blob/master/tests/cases.yml).
+```js
+import yamlToJoi from 'yaml-joi';
+
+const yamlSchema = `
+type: object
+limitation:
+  - keys:
+      name:
+        isSchema: true
+        type: string
+        allowEmpty: nothing
+        limitation:
+          - min: 5
+          - max: 24
+`;
+
+const validator = yamlToJoi(yamlSchema);
+validator.validate({}).error === null;
+validator.validate({ name: 'str' }).error !== null;
+validator.validate({ name: 'Alita' }).error === null;
+```
+
+Get more at [cases.yml](https://github.com/alitajs/yaml-joi/blob/master/tests/cases.yml).
