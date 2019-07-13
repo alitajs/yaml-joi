@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import Yaml from 'js-yaml';
-import { JoiSchema, JoiSchemaTypeName } from './types';
+import { JoiSchema, JoiSchemaTypeName, YamlJoiSchema } from './types';
 import { excludeCircular } from './utils';
 
 export * from './types';
@@ -34,37 +34,39 @@ const schemaValidator = Joi.object({
 /**
  * Convert object to `Joi.Schema` which is easy to execute.
  */
-export function joiSchemaParser(unparsed: JoiSchema): Joi.Schema {
+export function joiSchemaParser(unparsed: JoiSchema): YamlJoiSchema {
   const { error } = schemaValidator.validate(unparsed);
   if (error) throw new Error(`[joiSchemaParser] :\t\n${error.message}`);
-  let ret: Joi.Schema = Joi[unparsed.type]();
+  let joiSchema: Joi.Schema = Joi[unparsed.type]();
   if (unparsed.limitation) {
     for (const step of unparsed.limitation) {
       const entries = Object.entries(step);
       for (const item of entries) {
         const args = excludeCircular(Array.isArray(item[1]) ? item[1] : [item[1]]);
         // @ts-ignore
-        ret = ret[item[0]](...objToSchemaArgs(args));
+        joiSchema = joiSchema[item[0]](...objToSchemaArgs(args));
       }
     }
   }
   switch (unparsed.allowEmpty) {
     case true:
-      ret = Joi.alternatives(null, ret);
+      joiSchema = Joi.alternatives(null, joiSchema);
       break;
     case 'null':
-      ret = Joi.alternatives(null, ret).required();
+      joiSchema = Joi.alternatives(null, joiSchema).required();
       break;
     case 'nothing':
       break;
     default:
-      ret = ret.required();
+      joiSchema = joiSchema.required();
       break;
   }
+  const ret = joiSchema as YamlJoiSchema;
+  ret.load = unparsed;
   return ret;
 }
 
-export function yamlToJoi(yaml: string, loadOpts?: Yaml.LoadOptions): Joi.Schema {
+export function yamlToJoi(yaml: string, loadOpts?: Yaml.LoadOptions): YamlJoiSchema {
   return joiSchemaParser(Yaml.load(yaml, loadOpts));
 }
 

@@ -119,3 +119,8 @@ export type JoiSchemaInLimitationAsArg<T = unknown> =
   | JoiSchemaInLimitation
   | JoiSchemaInLimitation[]
   | (T extends unknown ? { [k: string]: unknown } : T);
+
+/**
+ * Parsed schema.
+ */
+export type YamlJoiSchema = Joi.Schema & { load: JoiSchema };
