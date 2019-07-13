@@ -1,5 +1,6 @@
 # yaml-joi
 
+[![Alita](https://img.shields.io/badge/alitajs-yaml%20joi-blue.svg)](https://github.com/alitajs/yaml-joi)
 [![NPM version](https://img.shields.io/npm/v/yaml-joi.svg?style=flat)](https://npmjs.org/package/yaml-joi)
 [![NPM downloads](http://img.shields.io/npm/dm/yaml-joi.svg?style=flat)](https://npmjs.org/package/yaml-joi)
 [![Build Status](https://travis-ci.com/alitajs/yaml-joi.svg?branch=master)](https://travis-ci.com/alitajs/yaml-joi)
@@ -7,7 +8,6 @@
 [![License](https://img.shields.io/npm/l/yaml-joi.svg)](https://npmjs.org/package/yaml-joi)
 
 Parse string in [yaml](https://yaml.org/) format into [Joi](https://github.com/hapijs/joi) validator.
-
 
 ## Install
 
