@@ -63,3 +63,9 @@ validator.validate({ name: 'Alita' }).error === null;
 ```
 
 Get more at [cases.yml](https://github.com/alitajs/yaml-joi/blob/master/tests/cases.yml).
+
+### Used for model definition
+
+- Define: [alitajs/notification/app/model/chat.ts#L50-L86](https://github.com/alitajs/notification/blob/67f5130b6a7ec02c891f5934296eb7ae7ad498ad/app/model/chat.ts#L50-L86)
+- Utils: [alitajs/notification/app/utils/index.ts#L80-L92](https://github.com/alitajs/notification/blob/67f5130b6a7ec02c891f5934296eb7ae7ad498ad/app/utils/index.ts#L80-L92)
+- Validate attributes: [alitajs/notification/app/service/chat.ts#L27-L28](https://github.com/alitajs/notification/blob/master/app/service/chat.ts#L27-L28)
