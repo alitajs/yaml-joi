@@ -67,5 +67,61 @@ Get more at [cases.yml](https://github.com/alitajs/yaml-joi/blob/master/tests/ca
 ### Used for model definition
 
 - Define: [alitajs/notification/app/model/chat.ts#L50-L86](https://github.com/alitajs/notification/blob/67f5130b6a7ec02c891f5934296eb7ae7ad498ad/app/model/chat.ts#L50-L86)
+
+```ts
+export const DefineChat: DefineModel<Chat> = {
+  Attr: {
+    chatId: {
+      type: CHAR(22),
+      allowNull: false,
+    },
+    ...
+  },
+  Sample: {
+    chatId: 'abcdefghijklmnopqrstuv',
+    ...
+  },
+  Validator: yamlJoi(`
+    type: object
+    isSchema: true
+    limitation:
+      - keys:
+          chatId:
+            type: string
+            isSchema: true
+            limitation:
+              - length: 22
+              - token: []
+          ...
+```
+
 - Utils: [alitajs/notification/app/utils/index.ts#L80-L92](https://github.com/alitajs/notification/blob/67f5130b6a7ec02c891f5934296eb7ae7ad498ad/app/utils/index.ts#L80-L92)
+
+```ts
+export function validate<T>(instance: T, validator: Schema): T {
+  const { error, value } = validator.validate(instance);
+  if (error) throw error;
+  return value;
+}
+
+export function validateModel<T>(define: DefineModel<T>, attrs: Partial<T>): T {
+  return validate({ ...define.Sample, ...attrs }, define.Validator);
+}
+
+export function validateAttr<T, U>(define: DefineModel<T>, attrs: U): U {
+  return pick(validateModel(define, attrs), ...Object.keys(attrs)) as U;
+}
+```
+
 - Validate attributes: [alitajs/notification/app/service/chat.ts#L27-L28](https://github.com/alitajs/notification/blob/master/app/service/chat.ts#L27-L28)
+
+```ts
+export default class ChatService extends Service {
+  ...
+  public getAllAccountChats(accountId: string) {
+    const where = validateAttr(DefineChat, { accountId });
+    return this.ctx.model.Chat.findAll({ where });
+  }
+  ...
+}
+```
